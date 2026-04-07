@@ -160,8 +160,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       ambientSound.play()
         .then(() => {
-          console.log("Playback started successfully");
+          console.log("音效播放成功");
           updateSoundIcon(false);
+          statusText.textContent = isExercising ? (isNear ? '專注於近景...' : '看向遠方...') : '準備開始...';
         })
         .catch(e => {
           console.error("Playback failed:", e);
@@ -202,4 +203,12 @@ document.addEventListener('DOMContentLoaded', () => {
   updateNearTarget();
   updateSoundIcon(isSoundMuted);
   preloadAllImages();
+
+  // "Pre-warm" audio on first interaction to avoid autoplay issues
+  document.addEventListener('click', () => {
+    if (ambientSound.paused && !isSoundMuted) {
+      // Internal state might need a nudge
+      console.log("觸發使用者互動以啟動音訊");
+    }
+  }, { once: true });
 });
