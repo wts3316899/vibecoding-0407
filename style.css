@@ -1,0 +1,320 @@
+:root {
+    --bg-dark: #0a0c10;
+    --accent: #a8b89f; /* Moss Green */
+    --accent-gold: #d4af37;
+    --text-main: #f5f5f5;
+    --text-dim: #999;
+    --glass: rgba(20, 25, 30, 0.6);
+    --transition-slow: 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+#app {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Background Logic */
+#background-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+}
+
+#bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter var(--transition-slow), transform var(--transition-slow), opacity 0.8s ease;
+    will-change: filter, transform, opacity;
+}
+
+#bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.4) 100%);
+    z-index: 2;
+    transition: opacity var(--transition-slow);
+}
+
+/* Status: Near Focus (Background blurred) */
+.is-near #bg-img {
+    filter: blur(15px) brightness(0.6);
+    transform: scale(1.05); /* Slight zoom for depth effect */
+}
+
+.is-near #bg-overlay {
+    opacity: 0.8;
+}
+
+/* Focus Area */
+#focus-area {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+
+.focus-label {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 300;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* Near Target */
+#near-target-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.8s ease, opacity 0.8s ease;
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+#near-target {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--accent);
+    filter: drop-shadow(0 0 15px rgba(168, 184, 159, 0.4));
+}
+
+#near-target svg {
+    width: 100%;
+    height: 100%;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+#near-target-container.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+#near-target-container.active .focus-label {
+    opacity: 1;
+}
+
+/* Far Target */
+#far-target-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity 0.8s ease;
+    opacity: 0;
+}
+
+#far-target-marker {
+    width: 12px;
+    height: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    position: relative;
+}
+
+#far-target-marker::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+#far-target-container.active {
+    opacity: 1;
+}
+
+#far-target-container.active .focus-label {
+    opacity: 1;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.5); }
+}
+
+/* Controls Panel */
+#controls-panel {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1.5rem 2.5rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    z-index: 100;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#controls-panel.hidden {
+    transform: translate(-50%, 100px);
+    opacity: 0;
+}
+
+.glass {
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+#brand {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+}
+
+#status-text {
+    font-weight: 300;
+    color: var(--text-dim);
+    min-width: 120px;
+}
+
+.control-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.primary-btn {
+    background: var(--accent);
+    color: #1a1a1a;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.primary-btn:hover {
+    transform: scale(1.05);
+    background: #c2d1b8;
+}
+
+.icon-buttons {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.icon-buttons button {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.icon-buttons button:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Modals */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+    transition: opacity 0.3s ease;
+}
+
+.modal-content {
+    max-width: 450px;
+    padding: 2.5rem;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.modal-content h2 {
+    margin-bottom: 1.5rem;
+    color: var(--accent-gold);
+}
+
+.modal-content p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+    color: #ccc;
+}
+
+.modal-content button {
+    margin-top: 1.5rem;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 0.6rem 2rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.modal-content button:hover {
+    background: var(--accent);
+    color: #000;
+}
+
+.hidden {
+    display: none !important;
+}

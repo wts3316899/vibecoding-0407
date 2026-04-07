@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZenFocus - 護眼放鬆禪意網頁</title>
+  <meta name="description" content="ZenFocus 是一個幫助使用者透過「遠近交替對焦」緩解眼部疲勞的網頁。">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div id="app">
+    <!-- Background Layer -->
+    <div id="background-container">
+      <img src="background.png" alt="Zen Background" id="bg-img">
+      <div id="bg-overlay"></div>
+    </div>
+
+    <!-- Focus Target Layer -->
+    <div id="focus-area">
+      <div id="near-target-container" class="hidden">
+        <div id="near-target">
+          <!-- Icon will be injected by JS -->
+        </div>
+        <div class="focus-label">看近處的物體</div>
+      </div>
+      <div id="far-target-container" class="active">
+        <div id="far-target-marker"></div>
+        <div class="focus-label">看遠方背景深處</div>
+      </div>
+    </div>
+
+    <!-- Dashboard / UI Controls -->
+    <div id="controls-panel" class="glass">
+      <h1 id="brand">ZenFocus</h1>
+      <p id="status-text">準備開始...</p>
+
+      <div class="control-actions">
+        <button id="start-btn" class="primary-btn">開始練習</button>
+        <div class="icon-buttons">
+          <button id="bg-next" title="更換背景">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 12V4L20 12L4 20V12Z"></path>
+            </svg>
+          </button>
+          <button id="sound-toggle" title="切換環境音">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            </svg>
+          </button>
+          <button id="info-btn" title="關於 ZenFocus">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info Modal -->
+    <div id="info-modal" class="modal hidden">
+      <div class="modal-content glass">
+        <h2>關於 ZenFocus</h2>
+        <p>長時間使用螢幕會讓眼部的睫狀肌持續緊繃。我們透過「遠近交替對焦任務」每 5 秒切換一次焦點，強制讓眼睛進行收縮與放鬆，有效減緩數位疲勞。</p>
+        <p><strong>使用建議：</strong> 練習時請盡量看向螢幕深處的對焦點，然後在切換後專注看中心出現的細節物體。</p>
+        <button id="close-modal">確認</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio Elements -->
+  <audio id="switch-sound" src="https://upload.wikimedia.org/wikipedia/commons/5/52/Computer_click.mp3"></audio>
+  <audio id="ambient-sound" loop
+    src="https://upload.wikimedia.org/wikipedia/commons/0/05/Rain_on_a_tin_roof_2.mp3"></audio>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
