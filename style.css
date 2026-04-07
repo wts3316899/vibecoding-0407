@@ -315,6 +315,68 @@ body {
     color: #000;
 }
 
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    #controls-panel {
+        padding: 1rem 1.5rem;
+        gap: 1rem;
+        bottom: 20px;
+        width: 90%;
+        max-width: 400px;
+        border-radius: 30px;
+    }
+
+    #brand {
+        display: none; /* Hide brand name on small screens to save space */
+    }
+
+    #status-text {
+        font-size: 0.8rem;
+        min-width: 80px;
+    }
+
+    .control-actions {
+        gap: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #controls-panel {
+        padding: 0.8rem 1rem;
+        gap: 0.5rem;
+        justify-content: space-between;
+    }
+
+    .primary-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .icon-buttons {
+        gap: 0.4rem;
+    }
+
+    .icon-buttons button {
+        width: 32px;
+        height: 32px;
+    }
+
+    .focus-label {
+        font-size: 0.8rem;
+        top: -30px;
+    }
+
+    #near-target {
+        width: 60px;
+        height: 60px;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+        width: 90%;
+    }
+}
+
 .hidden {
     display: none !important;
 }
